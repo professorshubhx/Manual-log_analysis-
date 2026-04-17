@@ -1,0 +1,116 @@
+# SOC Investigation Report
+
+## Attack Chain: Brute Force → Privilege Escalation
+
+---
+
+## Objective
+
+To simulate and analyze a multi-stage attack involving brute force authentication followed by privilege escalation using Windows Security Logs.
+
+---
+
+## Lab Environment
+
+* OS: Windows 10 / Windows 11
+* Tool: Windows Event Viewer
+* Test Account: testuser
+* Privilege Level: Standard user → Administrator
+
+---
+
+## Attack Scenario Overview
+
+This lab simulates a real-world attack chain:
+
+1. Multiple failed login attempts (password guessing)
+2. Successful authentication
+3. User added to Administrators group
+4. Elevated privileges assigned at logon
+
+---
+
+## Events Analyzed
+
+### 1. Failed Login Attempts
+
+**Event ID: 4625**
+
+* Multiple failed authentication attempts observed
+* Target Account: testuser
+* Failure Reason: Incorrect password
+* Indicates password guessing or brute force activity
+
+---
+
+### 2. Successful Login
+
+**Event ID: 4624**
+
+* Authentication succeeded after multiple failures
+* Logon Type: 3 (Network)
+* Confirms access gained using valid credentials
+
+---
+
+### 3. Privilege Escalation
+
+**Event ID: 4732**
+
+* User added to Administrators group
+* Target Account: testuser
+* Indicates privilege elevation
+
+---
+
+### 4. Privileged Logon
+
+**Event ID: 4672**
+
+* Special privileges assigned to user session
+* Account Name: testuser
+* Confirms administrative access
+
+---
+
+## Attack Timeline
+
+| Time     | Event ID | Description                        |
+| -------- | -------- | ---------------------------------- |
+| 9:38 PM | 4625     | Multiple failed login attempts     |
+| 9:46 PM | 4624     | Successful login                   |
+| 9:54 PM | 4732     | User added to Administrators group |
+| 10:12 PM | 4672     | Privileged session created         |
+
+---
+
+## Analysis
+
+The sequence of events indicates a structured attack pattern. Repeated failed login attempts suggest a brute force attempt to guess credentials. The subsequent successful login confirms that valid credentials were obtained.
+
+Shortly after gaining access, the user account was added to the Administrators group, indicating privilege escalation. The final event shows that elevated privileges were successfully assigned, confirming full administrative access.
+
+This pattern reflects a common real-world attack lifecycle: initial access followed by privilege escalation.
+
+---
+
+## Conclusion
+
+The system experienced a multi-stage attack where an attacker gained access through brute force and escalated privileges to obtain administrative control. Correlating multiple event logs provides clear visibility into such attack patterns.
+
+---
+
+## Recommendations
+
+* Implement account lockout policies
+* Monitor repeated failed login attempts
+* Enable alerts for administrative group changes
+* Track privileged logon events (Event ID 4672)
+* Enforce multi-factor authentication (MFA)
+* Apply the principle of least privilege
+
+---
+
+## Project Outcome
+
+This project demonstrates the ability to correlate multiple security events and identify a complete attack chain using manual log analysis. It reflects real-world SOC investigation practices and strengthens foundational skills in threat detection.
